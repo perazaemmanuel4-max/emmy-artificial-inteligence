@@ -1,59 +1,62 @@
-<!doctype html>
+
+<!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="theme-color" content="#080d0a">
-  <meta name="description" content="EMMY AI: tu asistente inteligente.">
+  <meta name="description" content="EMMY AI - Tu inteligencia artificial personal">
   <title>EMMY AI</title>
-  <link rel="icon" href="icon.svg" type="image/svg+xml">
+  <link rel="icon" href="icon.svg">
   <link rel="manifest" href="manifest.json">
   <link rel="stylesheet" href="styles.css">
 </head>
 <body>
   <div class="app-shell">
     <aside class="sidebar">
-      <a class="brand" href="./" aria-label="EMMY AI inicio">
+      <a class="brand" href="./">
         <span class="brand-mark">E</span>
         <span>EMMY <b>AI</b></span>
       </a>
-      <button class="new-chat" id="newChat">＋ Nuevo chat</button>
+      <button class="new-chat" id="newChat">+ Nuevo chat</button>
       <div class="side-label">TU ESPACIO</div>
-      <p class="side-note">Tus conversaciones aparecerán aquí cuando activemos el historial.</p>
+      <p class="side-note">Tu inteligencia artificial personal.</p>
       <div class="sidebar-bottom">
-        <span class="status-dot"></span> Interfaz inicial
+        <span class="status-dot"></span> EMMY AI activa
       </div>
     </aside>
 
-    <main class="main">
+    <main class="main-content">
       <header class="topbar">
-        <button class="mobile-brand" id="mobileNewChat" aria-label="Nuevo chat">EMMY <b>AI</b></button>
-        <span class="model-tag"><span class="status-dot"></span> Modo demostración</span>
+        <span class="brand-mark">E</span>
+        <strong>EMMY AI</strong>
+        <span class="online">● En línea</span>
       </header>
 
-      <section class="chat-area" aria-live="polite">
+      <section class="chat-area" id="chatArea">
         <div class="welcome" id="welcome">
-          <div class="hero-orb">✦</div>
-          <p class="eyebrow">TU ASISTENTE DIGITAL</p>
+          <div class="hero-icon">E</div>
           <h1>Hola, soy <span>EMMY AI</span></h1>
-          <p class="welcome-copy">Estoy aquí para ayudarte a crear, aprender y resolver ideas.</p>
+          <p>Tu inteligencia artificial personal.<br>¿Qué quieres hacer hoy?</p>
           <div class="suggestions">
-            <button class="suggestion" data-prompt="Dame ideas para crear una aplicación">✧ Ideas para una aplicación</button>
-            <button class="suggestion" data-prompt="Explícame cómo funciona la inteligencia artificial">⌘ Aprender sobre IA</button>
-            <button class="suggestion" data-prompt="Ayúdame a escribir un proyecto">✎ Escribir un proyecto</button>
+            <button class="suggestion">💡 Dame ideas para un negocio</button>
+            <button class="suggestion">✍️ Ayúdame a escribir</button>
+            <button class="suggestion">💻 Ayúdame con programación</button>
           </div>
         </div>
-        <div class="messages" id="messages"></div>
       </section>
 
-      <form class="composer" id="chatForm">
-        <label class="sr-only" for="messageInput">Escribe tu mensaje</label>
-        <textarea id="messageInput" rows="1" maxlength="2000" placeholder="Escribe un mensaje a EMMY AI..." required></textarea>
-        <button class="send-button" type="submit" aria-label="Enviar mensaje">➤</button>
-        <p class="disclaimer">EMMY AI está en desarrollo. Esta versión todavía no está conectada a un modelo de IA.</p>
+      <form class="chat-form" id="chatForm">
+        <input id="userInput" type="text"
+          placeholder="Pregúntale algo a EMMY AI..."
+          autocomplete="off">
+        <button type="submit" aria-label="Enviar">➤</button>
       </form>
+
+      <footer>EMMY AI · Tu inteligencia, sin límites.</footer>
     </main>
   </div>
+
   <script src="app.js"></script>
 </body>
 </html>
