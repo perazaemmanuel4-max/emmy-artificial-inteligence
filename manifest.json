@@ -1,0 +1,17 @@
+{
+  "name": "EMMY AI",
+  "short_name": "EMMY AI",
+  "description": "Tu asistente digital",
+  "start_url": "./",
+  "display": "standalone",
+  "background_color": "#080d0a",
+  "theme_color": "#080d0a",
+  "icons": [
+    {
+      "src": "icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}
