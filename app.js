@@ -1,34 +1,23 @@
 async function sendToEmmy(message) {
   const response = await fetch(
-    "http://localhost:11434/api/chat",
+    "http://127.0.0.1:8000/chat",
     {
       method: "POST",
       headers: {
         "Content-Type": "application/json"
       },
       body: JSON.stringify({
-        model: "llama3.2",
-        messages: [
-          {
-            role: "system",
-            content: "Eres EMMY AI, una inteligencia artificial útil, inteligente y amable. Responde en español."
-          },
-          {
-            role: "user",
-            content: message
-          }
-        ],
-        stream: false
+        message: message
       })
     }
   );
 
   if (!response.ok) {
-    throw new Error("No se pudo conectar con Ollama");
+    throw new Error("Error de conexión con EMMY AI");
   }
 
   const data = await response.json();
-  return data.message.content;
+  return data.response;
 }
 
 function addMessage(text, sender) {
@@ -64,7 +53,7 @@ async function sendMessage() {
     addMessage(answer, "emmy");
   } catch (error) {
     addMessage(
-      "No puedo conectarme con mi cerebro. Comprueba que Ollama esté funcionando.",
+      "No puedo conectarme con mi cerebro. Comprueba que Python y Ollama estén funcionando.",
       "emmy"
     );
   }
@@ -72,3 +61,8 @@ async function sendMessage() {
 
 document.getElementById("send-btn")
   .addEventListener("click", sendMessage);
+
+document.getElementById("user-input")
+  .addEventListener("keydown", function(event) {
+    if (event.key === "Enter") sendMessage();
+  });
