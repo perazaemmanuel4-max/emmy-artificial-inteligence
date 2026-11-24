@@ -1,95 +1,74 @@
+async function sendToEmmy(message) {
+  const response = await fetch(
+    "http://localhost:11434/api/chat",
+    {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({
+        model: "llama3.2",
+        messages: [
+          {
+            role: "system",
+            content: "Eres EMMY AI, una inteligencia artificial útil, inteligente y amable. Responde en español."
+          },
+          {
+            role: "user",
+            content: message
+          }
+        ],
+        stream: false
+      })
+    }
+  );
 
-const chatForm = document.getElementById("chatForm");
-const userInput = document.getElementById("userInput");
-const chatArea = document.getElementById("chatArea");
-const welcome = document.getElementById("welcome");
-const newChat = document.getElementById("newChat");
-
-let messages = [];
-
-function saveHistory() {
-  try {
-    localStorage.setItem("emmy_ai_history", JSON.stringify(messages));
-  } catch (error) {
-    console.warn("No se pudo guardar el historial.");
+  if (!response.ok) {
+    throw new Error("No se pudo conectar con Ollama");
   }
+
+  const data = await response.json();
+  return data.message.content;
 }
 
 function addMessage(text, sender) {
   const message = document.createElement("div");
 
+  message.textContent = text;
   message.style.cssText = `
     padding: 14px 17px;
     margin: 12px 0;
     max-width: 90%;
     border-radius: 14px;
-    line-height: 1.6;
+    background: ${sender === "user" ? "#173d24" : "#202020"};
+    color: white;
     white-space: pre-wrap;
-    overflow-wrap: anywhere;
-    ${sender === "user"
-      ? "align-self:flex-end;background:#19301e;color:white;"
-      : "align-self:flex-start;background:#101812;color:#39ff14;border:1px solid #26382a;"}
   `;
 
-  message.textContent = text;
-  chatArea.appendChild(message);
+  const chat = document.getElementById("chat");
+  chat.appendChild(message);
+  chat.scrollTop = chat.scrollHeight;
 }
 
-function sendMessage(text) {
-  const cleanText = text.trim();
-  if (!cleanText) return;
+async function sendMessage() {
+  const input = document.getElementById("user-input");
+  const message = input.value.trim();
 
-  if (welcome) welcome.style.display = "none";
+  if (!message) return;
 
-  addMessage(cleanText, "user");
+  addMessage(message, "user");
+  input.value = "";
 
-  messages.push({
-    role: "user",
-    content: cleanText
-  });
-
-  saveHistory();
-
-  addMessage(
-    "Tu mensaje llegó correctamente a EMMY AI. El modelo de inteligencia artificial todavía no está conectado. Estamos preparando esa conexión.",
-    "assistant"
-  );
-
-  chatArea.scrollTop = chatArea.scrollHeight;
-}
-
-chatForm.addEventListener("submit", function(event) {
-  event.preventDefault();
-
-  sendMessage(userInput.value);
-  userInput.value = "";
-});
-
-document.querySelectorAll(".suggestion").forEach(button => {
-  button.addEventListener("click", () => {
-    sendMessage(button.textContent.replace(/^.{2}\s*/, ""));
-  });
-});
-
-newChat.addEventListener("click", () => {
-  messages = [];
-  saveHistory();
-  chatArea.replaceChildren();
-
-  if (welcome) {
-    welcome.style.display = "block";
-    chatArea.appendChild(welcome);
+  try {
+    const answer = await sendToEmmy(message);
+    addMessage(answer, "emmy");
+  } catch (error) {
+    addMessage(
+      "No puedo conectarme con mi cerebro. Comprueba que Ollama esté funcionando.",
+      "emmy"
+    );
   }
-});
-
-try {
-  const saved = JSON.parse(
-    localStorage.getItem("emmy_ai_history") || "[]"
-  );
-
-  if (Array.isArray(saved)) {
-    messages = saved;
-  }
-} catch (error) {
-  messages = [];
 }
+
+document.getElementById("send-btn")
+  .addEventListener("click", sendMessage);
